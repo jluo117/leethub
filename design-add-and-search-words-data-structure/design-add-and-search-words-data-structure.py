@@ -1,18 +1,35 @@
 class WordDictionary:
-    def __init__(self):
-        self.d = defaultdict(set)
-​
-​
-    def addWord(self, word: str) -> None:
-        self.d[len(word)].add(word)
-​
-​
-    def search(self, word: str) -> bool:
-        m = len(word)
-        for dict_word in self.d[m]:
-            i = 0
-            while i < m and (dict_word[i] == word[i] or word[i] == '.'):
-                i += 1
-            if i == m:
-                return True
-        return False
+    def __init__(self):
+        self.trie = {}
+
+    def addWord(self, word: str) -> None:
+        node = self.trie
+        for c in word:
+            if c not in node:
+                node[c] = {}
+            node = node[c]
+        node['$'] = {}
+
+
+    def search(self, word: str) -> bool:
+        def helper(node,index):
+            
+            if index == len(word):
+                if '$' in node:
+                    return True
+                else:
+                    return False
+            
+            if word[index] == '.':
+                for c in node:
+                    if helper(node[c],index+1):
+                        
+                        return True
+                return False
+            else:
+                if word[index] not in node:
+                    return False
+                node = node[word[index]]
+                return helper(node,index+1)
+        return helper(self.trie,0)
+            
