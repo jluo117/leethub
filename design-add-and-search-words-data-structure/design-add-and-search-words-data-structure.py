@@ -1,3 +1,4 @@
+
 class WordDictionary:
     def __init__(self):
         self.trie = {}
@@ -7,9 +8,10 @@ class WordDictionary:
         for c in word:
             if c not in node:
                 node[c] = {}
-            node = node[c]
+                node = node[c]
+            else:
+                node = node[c]
         node['$'] = {}
-
 
     def search(self, word: str) -> bool:
         def helper(node,index):
