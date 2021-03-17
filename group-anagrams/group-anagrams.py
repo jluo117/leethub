@@ -1,20 +1,19 @@
 class Solution:
     def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
-        anagrams = {}
-        for string in strs:
-            charCount = collections.Counter()
-            alpha = set()
-            for c in string:
-                charCount[c] += 1
-                alpha.add(c)
-            hashVal = ""
-            listVal = list(alpha)
-            listVal.sort()
-            for val in listVal:
-                hashVal += (val + str(charCount[val]))
-            if hashVal in anagrams:
-                anagrams[hashVal].append(string)
+        def countWord(word):
+            counter = collections.Counter(word)
+            res = ""
+            for i in range(ord('a'),ord('z')+1):
+                if chr(i) in counter:
+                    res += chr(i) + str(counter[chr(i)])
+            return res
+        table = {}
+        for word in strs:
+            cWord = countWord(word)
+            if cWord in table:
+                table[cWord].append(word)
             else:
-                anagrams[hashVal] = [string]
-        
-        return [anagrams[val] for val in anagrams]
+                table[cWord] = [word]
+        res = [table[val] for val in table]
+        return res
+            
