@@ -5,13 +5,15 @@ class Solution:
         def helper(num):
             if num in table:
                 return table[num]
-            longest = 1
-            if num+1 in nums:
-                longest += helper(num+1)
-            table[num] = longest
-            return longest
-        res = 0
+            res = 1
+            if num + 1 in nums:
+                res += helper(num+1)
+                table[num] = res
+                return res
+            table[num] = res
+            return res
+        maxVal = 0
         for num in nums:
-            
-            res = max(res,helper(num))
-        return res
+            maxVal = max(maxVal,helper(num))
+        return maxVal
+        
