@@ -1,3 +1,5 @@
+'''
+'''
 
 class WordDictionary:
     def __init__(self):
@@ -25,7 +27,6 @@ class WordDictionary:
             if word[index] == '.':
                 for c in node:
                     if helper(node[c],index+1):
-                        
                         return True
                 return False
             else:
