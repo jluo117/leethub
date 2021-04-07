@@ -1,18 +1,20 @@
 class Solution:
     def maxScore(self, cardPoints: List[int], k: int) -> int:
-        maxVal = 0
+        taken = sum(cardPoints)
+        res = 0
         windowVal = 0
-        cardSum = sum(cardPoints)
-        windowSize = len(cardPoints) - k
+        noTakeWindow = len(cardPoints) - k
         L = 0
-        R = 0
+        R = noTakeWindow
+        for i in range(noTakeWindow):
+            windowVal += cardPoints[i]
+        res = max(res,taken-windowVal)
         while R < len(cardPoints):
-            if (R-L)+1 > windowSize:
-                windowVal -= cardPoints[L]
-                L += 1
+            windowVal -= cardPoints[L]
             windowVal += cardPoints[R]
-            if (R-L)+1 == windowSize:
-                maxVal = max(maxVal,cardSum-windowVal)
+            L += 1
             R += 1
-        return maxVal
+            res = max(res,taken-windowVal)
+        return res
+    
         
