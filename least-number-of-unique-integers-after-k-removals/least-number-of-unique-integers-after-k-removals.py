@@ -1,13 +1,13 @@
-from collections import Counter
 class Solution:
     def findLeastNumOfUniqueInts(self, arr: List[int], k: int) -> int:
-        table = Counter(arr)
+        arrCounter = collections.Counter(arr)
         myHeap = []
-        for val in table:
-            heapq.heappush(myHeap,table[val])
-        while k:
-            if myHeap[0] > k:
-                return len(myHeap)
-            popVal = heapq.heappop(myHeap)
-            k -= popVal
+        for val in arrCounter:
+            heapq.heappush(myHeap,(arrCounter[val],val))
+        while len(myHeap) and k >0:
+            moveVal = min(myHeap[0][0],k)
+            if myHeap[0][0] <= k:
+                heapq.heappop(myHeap)
+            k -= moveVal
         return len(myHeap)
+            
