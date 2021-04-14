@@ -1,25 +1,25 @@
 class Solution:
     def deleteAndEarn(self, nums: List[int]) -> int:
-        houses = []
-        table = collections.Counter(nums)
-        for val in table:
-            houses.append((val,table[val]))
-        houses.sort()
+        numCount = collections.Counter(nums)
+        ary = [i for i in numCount]
+        ary.sort()
         dp = {}
-        def helper(canRob,index):
-            if (index,canRob) in dp:
-                return dp[(index,canRob)]
-            if index == len(houses):
+        def helper(index):
+            if index in dp:
+                return dp[index]
+            if index >= len(ary):
                 return 0
-            if canRob:
-                res = helper(True,index+1)
-                if index+ 1 < len(houses) and houses[index+1][0] == houses[index][0]+1:
-                    res = max(helper(False,index+1)+(houses[index][0]*houses[index][1]),res)
-                else:
-                    res = max(helper(True,index+1)+(houses[index][0]*houses[index][1]),res)
-                dp[(index,canRob)] = res
-                return res
-            res = helper(True,index+1)
-            dp[(index,canRob)] = res
-            return res
-        return helper(-1,0)
+            take = numCount[ary[index]] * ary[index]
+            maxVal = 0
+            if index + 1 == len(ary):
+                return take
+            if ary[index+1]  == ary[index]+1:
+                
+                maxVal = max(helper(index+2) + take,helper(index+1))
+            else:
+                maxVal = take + helper(index+1)
+            dp[index] = maxVal
+            return maxVal
+        return helper(0)
+            
+            
