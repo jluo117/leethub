@@ -1,15 +1,19 @@
-
 class Solution:
     def lengthOfLIS(self, nums: List[int]) -> int:
-        dp = {}
-        for index in range(len(nums)-1,-1,-1):
-            maxVal = 1
-            for lowerIndex in range(index+1,len(nums)):
-                if nums[lowerIndex] > nums[index]:
-                    maxVal = max(dp[lowerIndex]+1,maxVal)
-            dp[index] = maxVal
-        maxVal = 0
-        for val in dp:
-            maxVal = max(maxVal,dp[val])
-        return maxVal
+        table = {}
+        def helper(index):
+            if index in table:
+                return table[index]
+            if index == len(nums):
+                return 0
             
+            maxSize = 1
+            for checkIndex in range(index+1,len(nums)):
+                if nums[checkIndex] > nums[index]:
+                    maxSize = max(maxSize,helper(checkIndex)+1)
+            table[index] = maxSize
+            return maxSize
+        res = 0
+        for index in range(len(nums)):
+            res = max(helper(index),res)
+        return res
