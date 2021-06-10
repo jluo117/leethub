@@ -12,12 +12,10 @@ class Solution:
         table = {}
         for employee in employees:
             table[employee.id] = employee
-        def helper(employee):
-            curImportance = employee.importance
-            for sub in employee.subordinates:
-                subEmployee = table[sub]
-                curImportance += helper(subEmployee)
-            return curImportance
+        def helper(curEmployee: Employee):
+            count = curEmployee.importance
+            for sub in curEmployee.subordinates:
+                count += helper(table[sub])
+            return count
         return helper(table[id])
-    
         
