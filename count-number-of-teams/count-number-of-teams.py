@@ -1,44 +1,24 @@
-'''
-[2,5,3,4,1]
-3n
-//2,1  //2,2 //
-
-
-
-'''
 class Solution:
     def numTeams(self, rating: List[int]) -> int:
-        decHelper = {}
-        incHelper = {}
-        def incHelp(rem,index):
-            if rem == 0:
-                return 1
-            if (rem,index) in incHelper:
-                return incHelper[(rem,index)]
-            res = 0
-            for upperIndex in range(index+1,len(rating)):
-                if rating[upperIndex] > rating[index]:
-                    res +=  incHelp(rem-1,upperIndex)
-            incHelper[(rem,index)] = res
-            return res
-        def decHelp(rem,index):
+        smallCount = [0] * len(rating)
+        bigCount = [0] * len(rating)
+        for lowerIndex in range(len(rating)):
+            curSmall = 0
+            curBig = 0
+            for upperIndex in range(lowerIndex+1,len(rating)):
+                if rating[lowerIndex] < rating[upperIndex]:
+                    curBig += 1
+                else:
+                    curSmall += 1
+            smallCount[lowerIndex] = curSmall
+            bigCount[lowerIndex] = curBig
+        count = 0
+        for lower in range(len(rating)):
+            for upper in range(lower+1,len(rating)):
+                if rating[lower] < rating[upper]:
+                    count += bigCount[upper]
+                else:
+                    count += smallCount[upper]
+        return count
             
-            if rem == 0:
                 
-                return True
-            if (rem,index) in decHelper:
-                return decHelper[(rem,index)]
-            res = 0
-            for upperIndex in range(index+1,len(rating)):
-                if rating[upperIndex] < rating[index]:
-                    res +=  decHelp(rem-1,upperIndex)
-                        
-            decHelper[(rem,index)] = res
-            return res
-        pos = 0
-        for index in range(len(rating)):
-            pos += incHelp(2,index)
-            pos += decHelp(2,index)
-        return pos
-            
-            
