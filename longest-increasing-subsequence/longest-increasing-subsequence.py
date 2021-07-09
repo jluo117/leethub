@@ -1,19 +1,12 @@
+
 class Solution:
     def lengthOfLIS(self, nums: List[int]) -> int:
-        table = {}
-        def helper(index):
-            if index in table:
-                return table[index]
-            if index == len(nums):
-                return 0
+        sub = []
+        for num in nums:
+            i = bisect_left(sub,num)
+            if i == len(sub):
+                sub.append(num)
+            else:
+                sub[i] = num
+        return len(sub)
             
-            maxSize = 1
-            for checkIndex in range(index+1,len(nums)):
-                if nums[checkIndex] > nums[index]:
-                    maxSize = max(maxSize,helper(checkIndex)+1)
-            table[index] = maxSize
-            return maxSize
-        res = 0
-        for index in range(len(nums)):
-            res = max(helper(index),res)
-        return res
