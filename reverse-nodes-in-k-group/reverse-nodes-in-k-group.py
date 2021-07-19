@@ -5,49 +5,44 @@
 #         self.next = next
 class Solution:
     def reverseKGroup(self, head: ListNode, k: int) -> ListNode:
-        def checkSize(node):
-            curNode = node
-            count = 0
-            while curNode and count < k:
-                count += 1
-                if count == k:
-                    return curNode
-                curNode = curNode.next
-            return None
-        def reverse(curHead):
+        def get_k_list(node):
+            head = node
+            end = node
+            for _ in range(k):
+                if node == None:
+                    return None,None
+                end = node
+                node = node.next
+            return head,end
+        def reverse_list(head):
+            tl = head
             prev = None
-            tl = None
-            curNode = curHead
-            while curNode:
-                nextNode = curNode.next
-                if prev == None:
-                    prev = curNode
-                    curNode.next = None
-                    tl = curNode
-                else:
-                    curNode.next = prev
-                    prev = curNode
-                curNode = nextNode
+            cur = head
+            while cur != None:
+                nextNode = cur.next
+                cur.next = prev
+                prev = cur
+                cur = nextNode
             return prev,tl
-                    
-           
-        curNode = head
+        masterHead = head
         prev = None
+        curNode = head
         while curNode != None:
-            getTail = checkSize(curNode)
-            if getTail == None:
-                return head
-            nextVal = getTail.next
-            getTail.next = None
-            newHead,newTail = reverse(curNode)
-            if prev == None:
-                head = newHead
+            curHead,end  = get_k_list(curNode)
+            if end == None:
+                return masterHead
+            nextNode = end.next
+            end.next = None
+            newhead,newTl = reverse_list(curHead)
+            if prev:
+                prev.next = newhead
             else:
-                prev.next = newHead
-            prev = newTail
-            newTail.next = nextVal
-            curNode = nextVal
-        return head
-            
+                masterHead = newhead
+            prev = newTl
+            newTl.next = nextNode
+            curNode = nextNode
+        return masterHead
+        
+        
                 
         
