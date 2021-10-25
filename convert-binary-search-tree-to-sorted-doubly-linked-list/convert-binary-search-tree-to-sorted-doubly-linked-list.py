@@ -9,24 +9,28 @@ class Node:
 
 class Solution:
     def treeToDoublyList(self, root: 'Node') -> 'Node':
-        self.head = None
-        self.tail = None
-        def helper(root):
-            if root == None:
-                return
-            helper(root.left)
-            if self.tail:
-                self.tail.right = root
-                root.left = self.tail
-            else:
-                self.head = root
-            self.tail = root
-            helper(root.right)
-            
-                
-        helper(root)
         if root == None:
             return None
+        self.tail = None
+        self.head = None
+        def helper(node):
+            if node.left == None:
+                if self.tail == None:
+                    self.tail = node
+                    self.head = self.tail
+                else:
+                    self.tail.right = node
+                    node.left = self.tail
+                    self.tail = node
+            else:
+                helper(node.left)
+                self.tail.right = node
+                node.left = self.tail
+                self.tail = node
+            if node.right:
+                helper(node.right)
+            return
+        helper(root)
         self.tail.right = self.head
         self.head.left = self.tail
         return self.head
