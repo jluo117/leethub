@@ -1,27 +1,24 @@
 class Solution:
     def insert(self, intervals: List[List[int]], newInterval: List[int]) -> List[List[int]]:
-        if len(intervals) == 0:
-            return [newInterval]
-        toMerge = []
+        bisect.insort(intervals,newInterval)
+        print(intervals)
+        cur_end = None
+        cur_start = None
         res = []
         for interval in intervals:
-            toMerge.append((interval[0],False))
-            toMerge.append((interval[1],True))
-        bisect.insort(toMerge,(newInterval[0],False))
-        bisect.insort(toMerge,(newInterval[1],True))
-        curStart = -1
-        depth = 0
-        for sec in toMerge:
-            if sec[1] == False:
-                depth += 1
-                if curStart == -1:
-                    curStart = sec[0]
+            if cur_end == None:
+                cur_start = interval[0]
+                cur_end = interval[1]
+                continue
+            if cur_end < interval[0]:
+                res.append([cur_start,cur_end])
+                cur_start = interval[0]
+                cur_end = interval[1]
             else:
-                depth -= 1
-                if depth == 0:
-                    res.append((curStart,sec[0]))
-                    curStart = -1
+                cur_end = max(interval[1],cur_end)
+        res.append([cur_start,cur_end])
         return res
+            
                 
                 
         
